@@ -8,6 +8,6 @@ namespace Calculator.Interfaces
 		/// <summary>
 		/// Executes the specified operation on the given operands.
 		/// </summary>
-		decimal Execute(decimal a, decimal b);
+		public decimal Calculate(decimal a, decimal b);
 	}
 }
