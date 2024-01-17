@@ -1,9 +1,9 @@
-using Calculator.Interfaces;
+using CalculatorApp.Interfaces;
 
-namespace Calculator.Operators
+namespace CalculatorApp.Operators
 {
 	public class DivisionOperation : ICalculatorOperation
 	{
-		public decimal Calculate(decimal a, decimal b) => a / b;
+		public double Calculate(double a, double b) => a / b;
 	}
 }

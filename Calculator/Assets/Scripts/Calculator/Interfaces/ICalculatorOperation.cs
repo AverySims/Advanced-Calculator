@@ -1,4 +1,4 @@
-namespace Calculator.Interfaces
+namespace CalculatorApp.Interfaces
 {
 	/// <summary>
 	/// Interface representing a calculator operation.
@@ -8,6 +8,6 @@ namespace Calculator.Interfaces
 		/// <summary>
 		/// Executes the specified operation on the given operands.
 		/// </summary>
-		public decimal Calculate(decimal a, decimal b);
+		public double Calculate(double a, double b);
 	}
 }
