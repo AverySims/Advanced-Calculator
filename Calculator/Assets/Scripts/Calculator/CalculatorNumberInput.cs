@@ -75,7 +75,7 @@ namespace CalculatorApp
 		{
 			if (buttonEvents != null) buttonEvents.DecimalButtonPress();
 			
-			Debug.Log($"Decimal was clicked!");
+			Debug.Log("Decimal was clicked!");
 		}
 		
 		/// <summary>
@@ -85,7 +85,7 @@ namespace CalculatorApp
 		{
 			if (buttonEvents != null) buttonEvents.SignButtonPress();
 			
-			Debug.Log($"Sign was clicked!");
+			Debug.Log("Sign was clicked!");
 		}
 		
 	}
