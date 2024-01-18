@@ -1,18 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CalculatorApp.Events;
 using CalculatorApp.Interfaces;
 using CalculatorApp.Operators;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility;
 
 namespace CalculatorApp
 {
 	public class CalculatorOperatorInput : MonoBehaviour
 	{
-		[HorizontalGroup("Horizontal", 0.9f)]
+		[Title("Event References")]
+		[SerializeField]
+		private ButtonEventHandler buttonEvents;
+		
+		/*[HorizontalGroup("Horizontal", 0.9f)]
 		[Title("Component References")]
 		[Tooltip("A specified reference to a calculator component.\n" +
 		         "\nIf the override is disabled for the calculator reference, " +
@@ -26,7 +30,7 @@ namespace CalculatorApp
 		[HideLabel]
 		[ToggleLeft]
 		[SerializeField] 
-		private bool overrideCalculatorReference;
+		private bool overrideCalculatorReference;*/
 		
 		[Title("Calculator")]
 		[Tooltip("A specified operation to perform on the calculator.")]
@@ -40,8 +44,8 @@ namespace CalculatorApp
 
 		private void Awake()
 		{
-			// Get the button component using a custom extension method.
-			_button = gameObject.FindComponentInGameObject<Button>();
+			// Get the button component
+			_button = GetComponent<Button>();
 			
 			// assign the operator type
 			switch (calculatorOperation)
@@ -62,10 +66,6 @@ namespace CalculatorApp
 					SwitchDefaulted(calculatorOperation);
 					break;
 			}
-			
-			// check if the calculator reference is overridden
-			if (overrideCalculatorReference) return;
-			calculator = FindObjectOfType<Calculator>();
 		}
 
 		private void OnEnable() => _button.onClick.AddListener(OnClick);
@@ -76,9 +76,7 @@ namespace CalculatorApp
 		
 		private void OnClick()
 		{
-			calculator.SetOperation(_operation);
-			
-			Debug.Log($"Setting operation: {calculatorOperation.ToString()}");
+			if (buttonEvents != null) buttonEvents.OperationButtonPress(_operation);
 		}
 
 		private void SwitchDefaulted(Operation operation)

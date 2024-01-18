@@ -2,24 +2,40 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CalculatorApp.Events;
+using CalculatorApp.Operators;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CalculatorApp
 {
-	public class CalculatorNumberInput : MonoBehaviour
+	public class CalculatorInput : MonoBehaviour
 	{
 		[Title("Event References")]
 		[SerializeField]
 		private ButtonEventHandler buttonEvents;
-		
+
 		[Title("Component References")]
+		[Title("", "Operators")]
+		[SerializeField]
+		private Button additionOperator;
+		
+		[SerializeField]
+		private Button subtractionOperator;
+		
+		[SerializeField]
+		private Button multiplicationOperator;
+		
+		[SerializeField]
+		private Button divisionOperator;
+		
+		[Title("", "Digits")]
 		[Tooltip("A list of button component references for the digits \"0\" through \"9\".\n" +
 		         "Component references should be assigned in order from least to greatest.")]
 		[SerializeField]
 		private List<Button> digitButtons;
 
+		[Title("", "Decimal and Sign")]
 		[Tooltip("The button component reference to convert the value to a decimal value.")]
 		[SerializeField]
 		private Button decimalButton;
@@ -28,11 +44,25 @@ namespace CalculatorApp
 		[SerializeField]
 		private Button signButton;
 
+		[Title("", "Clear and Equals")]
+		[Tooltip("The button component reference to clear the current value.")]
+		[SerializeField]
+		private Button clearButton;
+		
+		[Tooltip("The button component reference to calculate the current equation")]
+		[SerializeField]
+		private Button equalsButton;
+		
 		#region Unity Methods
 
 		private void OnEnable()
 		{
 			// subscribe to the button click events
+			additionOperator.onClick.AddListener(() => buttonEvents.OperationButtonPress(new AdditionOperation()));
+			subtractionOperator.onClick.AddListener(() => buttonEvents.OperationButtonPress(new SubtractionOperation()));
+			multiplicationOperator.onClick.AddListener(() => buttonEvents.OperationButtonPress(new MultiplyOperation()));
+			divisionOperator.onClick.AddListener(() => buttonEvents.OperationButtonPress(new DivisionOperation()));
+			
 			for (int i = 0; i < digitButtons.Count; i++)
 			{
 				int value = i;
@@ -41,11 +71,19 @@ namespace CalculatorApp
 			
 			decimalButton.onClick.AddListener(OnDecimalClick);
 			signButton.onClick.AddListener(OnSignClick);
+
+			clearButton.onClick.AddListener(OnClearClick);
+			equalsButton.onClick.AddListener(OnEqualsClick);
 		}
 
 		private void OnDisable()
 		{
 			// un-subscribe to the button click events
+			additionOperator.onClick.RemoveAllListeners();
+			subtractionOperator.onClick.RemoveAllListeners();
+			multiplicationOperator.onClick.RemoveAllListeners();
+			divisionOperator.onClick.RemoveAllListeners();
+			
 			foreach (var button in digitButtons)
 			{
 				button.onClick.RemoveAllListeners();
@@ -53,6 +91,9 @@ namespace CalculatorApp
 			
 			decimalButton.onClick.RemoveListener(OnDecimalClick);
 			signButton.onClick.RemoveListener(OnSignClick);
+			
+			clearButton.onClick.RemoveListener(OnClearClick);
+			equalsButton.onClick.RemoveListener(OnEqualsClick);
 		}
 
 		#endregion
@@ -88,5 +129,18 @@ namespace CalculatorApp
 			Debug.Log("Sign was clicked!");
 		}
 		
+		private void OnClearClick()
+		{
+			if (buttonEvents != null) buttonEvents.ClearButtonPress();
+			
+			Debug.Log("Clear was clicked!");
+		}
+		
+		private void OnEqualsClick()
+		{
+			if (buttonEvents != null) buttonEvents.EqualsButtonPress();
+			
+			Debug.Log("Equals was clicked!");
+		}
 	}
 }
