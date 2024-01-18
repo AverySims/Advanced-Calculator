@@ -1,21 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using CalculatorApp.Events;
 using CalculatorApp.Interfaces;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace CalculatorApp
 {
 	public class Calculator : MonoBehaviour
 	{
+		[Title("Event References")]
+		[SerializeField]
+		private ButtonEventHandler buttonEvents;
+		
+		[Title("Variable A")]
 		[HorizontalGroup("Horizontal")]
-		[BoxGroup("Horizontal/Variable A")]
 		[HideLabel]
 		[SerializeField]
 		public double variableA;
 
-		[BoxGroup("Horizontal/Variable B")]
+		[Title("Variable B")]
+		[HorizontalGroup("Horizontal")]
 		[HideLabel]
 		[SerializeField]
 		public double variableB;
@@ -25,6 +30,8 @@ namespace CalculatorApp
 		public void SetOperation(ICalculatorOperation operation)
 		{
 			_operation = operation;
+			
+			if (buttonEvents != null) buttonEvents.OperationButtonPress(operation);
 		}
 	
 		public double Calculate()
